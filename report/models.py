@@ -20,7 +20,7 @@ class NemoReport(AbstractReport):
 
 
 class CommonReport(AbstractReport):
-    image = models.ImageField(Null=True, blank=True)
+    image = models.ImageField(null=True, blank=True)
 
 
 class CommentReport(AbstractReport):
