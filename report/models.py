@@ -1,9 +1,9 @@
 from django.db import models
-from core.models import Base
+from core.models import BaseModel
 from post.models import Post
 
 
-class AbstractReport(Base):
+class AbstractReport(BaseModel):
     content = models.TextField()
     password = models.CharField(max_length=15)
     is_student = models.BooleanField(default=False)
@@ -28,6 +28,6 @@ class CommentReport(AbstractReport):
     post_num = models.PositiveIntegerField()
 
 
-class Question(Base):
+class Question(BaseModel):
     content = models.TextField()
     answer = models.TextField()
