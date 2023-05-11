@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import Base
+from core.utils.discord import send_to_discord
 
 
 class Suggestion(Base):
