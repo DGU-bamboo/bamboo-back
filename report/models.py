@@ -8,6 +8,7 @@ class AbstractReport(Base):
     password = models.CharField(max_length=15)
     is_student = models.BooleanField(default=False)
     is_approve = models.BooleanField(null=True)
+    approved_at = models.DateTimeField(null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     filtered_content = models.TextField()
 
