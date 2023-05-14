@@ -5,10 +5,9 @@ from post.models import Post
 
 class AbstractReport(BaseModel):
     content = models.TextField()
-    password = models.CharField(max_length=15)
+    password = models.PositiveSmallIntegerField()
     is_student = models.BooleanField(default=False)
     is_approve = models.BooleanField(null=True)
-    approved_at = models.DateTimeField(null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     filtered_content = models.TextField()
 
@@ -21,13 +20,14 @@ class NemoReport(AbstractReport):
 
 
 class CommonReport(AbstractReport):
-    image = models.ImageField(null=True, blank=True)
+    pass
 
 
 class CommentReport(AbstractReport):
     post_num = models.PositiveIntegerField()
+    approved_at = models.DateTimeField(null=True)
 
 
 class Question(BaseModel):
-    content = models.TextField()
-    answer = models.TextField()
+    content = models.CharField(max_length=100)
+    answer = models.CharField(max_length=20)

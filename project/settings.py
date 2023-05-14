@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "report",
     "post",
     "suggestion",
+    "notice",
 ]
 
 MIDDLEWARE = [

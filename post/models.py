@@ -7,6 +7,8 @@ class Post(BaseModel):
     class PostType(models.TextChoices):
         COMMON = "COMMON", _("COMMON")
         NEMO = "NEMO", _("NEMO")
+        ADMIN = "ADMIN", _("ADMIN")
 
     type = models.CharField(choices=PostType.choices, max_length=15)
     content = models.TextField()
+    is_student = models.BooleanField(default=False)

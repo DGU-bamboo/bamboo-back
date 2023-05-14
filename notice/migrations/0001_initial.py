@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Post",
+            name="Notice",
             fields=[
                 (
                     "id",
@@ -24,19 +24,12 @@ class Migration(migrations.Migration):
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 ("is_deleted", models.BooleanField(default=False)),
-                (
-                    "type",
-                    models.CharField(
-                        choices=[
-                            ("COMMON", "COMMON"),
-                            ("NEMO", "NEMO"),
-                            ("ADMIN", "ADMIN"),
-                        ],
-                        max_length=15,
-                    ),
-                ),
+                ("title", models.CharField(max_length=30)),
                 ("content", models.TextField()),
-                ("is_student", models.BooleanField(default=False)),
+                (
+                    "image",
+                    models.ImageField(blank=True, null=True, upload_to="notice/"),
+                ),
             ],
             options={
                 "abstract": False,
