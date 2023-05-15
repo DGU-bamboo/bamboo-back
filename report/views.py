@@ -19,9 +19,7 @@ class QuestionViewSet(
     queryset = Question.objects.all()
 
     def get_serializer_class(self):
-        if self.action in ["list", "retrieve", "update"]:
-            return QuestionAdminSerializer
-        elif self.action == "list_random_questions":
+        if self.action == "random":
             return RandomQuestionSerializer
         else:
             return QuestionSerializer
@@ -32,7 +30,7 @@ class QuestionViewSet(
         return super().get_permissions()
 
     @action(methods=["GET"], detail=False)
-    def list_random_questions(self, request):
+    def random(self, request):
         question = Question.objects.order_by("?").first()
         serializer = RandomQuestionSerializer(question)
         return Response(serializer.data)
