@@ -8,7 +8,7 @@ class AbstractReport(BaseModel):
     password = models.PositiveSmallIntegerField()
     is_student = models.BooleanField(default=False)
     is_approve = models.BooleanField(null=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     filtered_content = models.TextField(default="")
 
     class Meta:
@@ -25,7 +25,7 @@ class CommonReport(AbstractReport):
 
 class CommentReport(AbstractReport):
     post_num = models.PositiveIntegerField()
-    approved_at = models.DateTimeField(null=True)
+    approved_at = models.DateTimeField(null=True, blank=True)
 
 
 class Question(BaseModel):
