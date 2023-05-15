@@ -6,4 +6,4 @@ class SuggestionConfig(AppConfig):
     name = "suggestion"
 
     def ready(self):
-        import suggestion.recievers
+        import suggestion.receivers
