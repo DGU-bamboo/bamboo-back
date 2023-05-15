@@ -8,7 +8,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = ["id", "content", "answer"]
 
 
-class RandomQuestionSerializer(serializers.ModelSerializer):
+class QuestionWithoutAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ["id", "content"]

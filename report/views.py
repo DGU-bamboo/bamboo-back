@@ -20,7 +20,7 @@ class QuestionViewSet(
 
     def get_serializer_class(self):
         if self.action == "random":
-            return RandomQuestionSerializer
+            return QuestionWithoutAnswerSerializer
         else:
             return QuestionSerializer
 
@@ -32,5 +32,5 @@ class QuestionViewSet(
     @action(methods=["GET"], detail=False)
     def random(self, request):
         question = Question.objects.order_by("?").first()
-        serializer = RandomQuestionSerializer(question)
+        serializer = QuestionWithoutAnswerSerializer(question)
         return Response(serializer.data)
