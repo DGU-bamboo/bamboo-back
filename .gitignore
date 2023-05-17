@@ -174,7 +174,3 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/django
 
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
