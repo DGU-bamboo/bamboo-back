@@ -13,9 +13,18 @@ class Report(BaseModel):
     content = models.TextField(default="")
     is_student = models.BooleanField(default=False)
     password = models.CharField(max_length=4)
-    is_approved = models.BooleanField(default=False, null=True)
+    is_approved = models.BooleanField(null=True)
     post = models.ForeignKey(Post, null=True, blank=True, on_delete=models.CASCADE)
-    filtered_content = models.TextField()
+    filtered_content = models.TextField(default="")
+
+    @property
+    def postify(self):
+        content = (
+            self.created_at.strftime("%Y.%m.%d %p %I:%M:%S")
+            + (" 🐘" if self.is_student else "")
+            + f"\n{self.filtered_content}"
+        )
+        return content
 
 
 class Question(BaseModel):
