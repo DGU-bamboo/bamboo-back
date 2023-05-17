@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import mixins, status
+
 from .models import *
 from .serializers import *
 from rest_framework import viewsets
@@ -64,3 +65,31 @@ class CommonReportViewSet(
         report.is_approve = False
         report.save(update_fields=["is_approve"])
         return Response()
+
+
+class QuestionViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Question.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == "random":
+            return QuestionWithoutAnswerSerializer
+        else:
+            return QuestionSerializer
+
+    def get_permissions(self):
+        if self.action in ["create", "list", "retrieve", "update", "destroy"]:
+            return [IsAdminUser()]
+        return super().get_permissions()
+
+    @action(methods=["GET"], detail=False)
+    def random(self, request):
+        question = Question.objects.order_by("?").first()
+        serializer = QuestionWithoutAnswerSerializer(question)
+        return Response(serializer.data)

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from report.models import Question
 
 from report.models import Question, CommonReport
 
