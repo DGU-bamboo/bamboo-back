@@ -5,7 +5,7 @@ from .models import *
 class SuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Suggestion
-        fields = ["id", "content", "contact", "image"]
+        fields = ["id", "content", "contact"]
 
 
 class SuggestioniAdminSerializer(serializers.ModelSerializer):
