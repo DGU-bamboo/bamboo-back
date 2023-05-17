@@ -23,6 +23,6 @@ from rest_framework import routers
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/v1/", include("suggestion.urls")),
-    path("api/v1/", include("report.urls")),
+    path("api/", include("suggestion.urls")),
+    # path("api/v1/", include("report.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
