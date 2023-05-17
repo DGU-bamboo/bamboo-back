@@ -3,7 +3,9 @@ from django.db import models
 from core.models import BaseModel
 
 
-class Notice(BaseModel):
-    title = models.CharField(max_length=30)
-    content = models.TextField(default="")
-    image = models.ImageField(upload_to="notice/", blank=True, null=True)
+class Notification(BaseModel):
+    image = models.ImageField(blank=True, null=True, upload_to="notice/")
+    url = models.URLField(max_length=2048, null=True, blank=True)
+    published_at = models.DateTimeField(null=True, blank=True)
+    ended_at = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=False)
