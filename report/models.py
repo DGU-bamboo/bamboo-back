@@ -7,7 +7,7 @@ class AbstractReport(BaseModel):
     content = models.TextField(default="")
     password = models.PositiveSmallIntegerField()
     is_student = models.BooleanField(default=False)
-    is_approve = models.BooleanField(null=True)
+    is_approved = models.BooleanField(null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     filtered_content = models.TextField(default="")
 
