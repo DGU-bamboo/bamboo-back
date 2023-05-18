@@ -14,5 +14,5 @@ comment_router.register("comments", CommentViewSet, basename="comments")
 
 urlpatterns = [
     path("", include(default_router.urls)),
-    path("posts/<int:id>/", include(comment_router.urls)),
+    path("", include(comment_router.urls)),
 ]

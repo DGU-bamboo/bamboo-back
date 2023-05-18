@@ -25,3 +25,9 @@ class ReportSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data["filtered_content"] = validated_data["content"]
         return super().create(validated_data)
+
+
+class QuestionWithoutAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ["id", "content"]

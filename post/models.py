@@ -17,7 +17,7 @@ class Post(BaseModel):
 
 class Comment(BaseModel):
     post_num = models.CharField(max_length=15)
-    approved_at = models.DateTimeField(auto_now_add=True)
+    approved_at = models.DateTimeField(null=True, blank=True)
     content = models.TextField(default="")
     password = models.CharField(max_length=4)
     is_student = models.BooleanField(default=False)

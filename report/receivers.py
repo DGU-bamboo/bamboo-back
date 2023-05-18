@@ -35,7 +35,9 @@ def common_approve_to_post(sender, instance, **kwargs):
             return
         if old_instance.is_approved != True and instance.is_approved == True:
             post = Post.objects.create(
-                content=instance.postify, is_student=instance.is_student, type="COMMON"
+                content=instance.postify + "\n\n#동국대학교대나무숲 #동대나무숲",
+                is_student=instance.is_student,
+                type="COMMON",
             )
             instance.post = post
 

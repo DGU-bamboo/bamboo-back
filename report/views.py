@@ -1,10 +1,11 @@
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
-from report.models import Report
-from report.serializers import ReportSerializer
+from report.models import Report, Question
+from report.serializers import ReportSerializer, QuestionWithoutAnswerSerializer
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from post.models import Post
+from rest_framework import views
 
 
 class ReportViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -35,3 +36,10 @@ class ReportViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         post = Post.objects.create(content=content, type="NEMO", is_student=False)
         queryset.update(post=post)
         return Response()
+
+
+class RandomQuestion(views.APIView):
+    def get(self, request, *args, **kwargs):
+        random_question = Question.objects.all().order_by("?").first()
+        serializer = QuestionWithoutAnswerSerializer(random_question)
+        return Response(serializer.data)

@@ -68,6 +68,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     question = serializers.IntegerField(write_only=True)
     answer = serializers.CharField(max_length=20, write_only=True)
+    content = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = Comment
@@ -79,6 +81,11 @@ class CommentSerializer(serializers.ModelSerializer):
             "answer",
             "post_num",
         ]
+
+    def get_content(self, instance):
+        if instance.deleted_at:
+            return "< 작성자의 요청에 의해 삭제된 댓글입니다. >"
+        return instance.content
 
     def validate(self, data):
         question_id = data.pop("question")
