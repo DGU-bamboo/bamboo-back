@@ -10,19 +10,22 @@ from post.models import Post
 def suggestion_discord_sender(sender, instance, created, **kwargs):
     if created:
         # todo: admin 추가하고 관리자용 어드민으로 변경
+        reject_url = f"{settings.API_URL}/reports/{instance.id}/reject"
         if instance.type == "NEMO":
             admin_link = f"{settings.WEB_URL}/admin/report/report/{instance.id}/change/"
             url = settings.DISCORD_WEBHOOK_URL_NEMO
             message = f"""[두근세근! 🐠 니모 한 마리가 도착했어요!]({admin_link})
                         > 제보 내용 : {instance.content}
-                        > 재학생 여부 : {instance.is_student}"""
+                        > 재학생 여부 : {instance.is_student}
+                        > [거절하기]({reject_url})"""
             send_to_discord(url, message)
         elif instance.type == "COMMON":
             admin_link = f"{settings.WEB_URL}/admin/report/report/{instance.id}/change/"
             url = settings.DISCORD_WEBHOOK_URL_COMMON
             message = f"""[임금님 귀는 당나귀 귀! 일반 제보가 도착했어요!]({admin_link})
                         > 제보 내용 : {instance.content[:50]}
-                        > 재학생 여부 : {instance.is_student}"""
+                        > 재학생 여부 : {instance.is_student}
+                        > [거절하기]({reject_url})"""
             send_to_discord(url, message)
 
 

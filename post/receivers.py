@@ -32,10 +32,30 @@ def add_id_hashtag_in_post(sender, instance, created, **kwargs):
 
 
 @receiver(pre_save, sender=Comment)
-def comment_receiver(sender, instance, **kwargs):
+def comment_pre_save(sender, instance, **kwargs):
     try:
         old_instance = Comment.objects.get(pk=instance.pk)
     except Comment.DoesNotExist:
         return
     if old_instance.is_approved != True and instance.is_approved == True:
         instance.approved_at = timezone.now()
+
+
+@receiver(post_save, sender=Comment)
+def comment_post_save(sender, instance, created, **kwargs):
+    if created:
+        # todo: admin 추가하고 관리자용 어드민으로 변경
+        reject_url = f"{settings.API_URL}/comments/{instance.id}/reject"
+        comment_admin_link = (
+            f"{settings.WEB_URL}/admin/post/comment/{instance.id}/change/"
+        )
+        post_admin_link = (
+            f"{settings.WEB_URL}/admin/post/post/{instance.post.id}/change/"
+        )
+        url = settings.DISCORD_WEBHOOK_URL_NEMO
+        message = f"""[내 목소리가 들리나요? 댓글 달아주세요!]({comment_admin_link})
+                        > 댓글 내용 : {instance.content}
+                        > 재학생 여부 : {instance.is_student}
+                        > [글 링크]({post_admin_link})
+                        > [거절하기]({reject_url})"""
+        send_to_discord(url, message)
