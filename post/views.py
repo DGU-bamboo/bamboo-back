@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from requests import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from .models import *
 from .serializers import *
 from django.db.models import Count
@@ -8,16 +8,24 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
 
 
-class PostViewSet(viewsets.ModelViewSet):
+class PostViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return PostDetailSerializer
+        return PostSerializer
 
     def get_queryset(self):
         return Post.objects.annotate(report_cnt=Count("report"))
 
 
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+class CommentViewSet(
+    mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
+    queryset = Comment.objects.filter(is_approved=True).order_by("approved_at")
     serializer_class = CommentSerializer
 
     @action(methods=["GET"], detail=True, permission_classes=[IsAdminUser])

@@ -15,6 +15,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_title(self, instance):
         if instance.type == "COMMON":
+            if instance.deleted_at:
+                return "삭제된/n제보입니다."
             return instance.content[:20]
         elif instance.type == "NEMO":
             return instance.created_at.strftime("%Y-%m-%d %p %I시 %M분") + " 니모"
@@ -34,9 +36,33 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
+    title = serializers.SerializerMethodField()
+    is_deleted = serializers.SerializerMethodField()
+
+    def get_is_deleted(self, instance):
+        if instance.deleted_at:
+            return True
+        return False
+
+    def get_title(self, instance):
+        if instance.type == "COMMON":
+            if instance.deleted_at:
+                return "삭제된/n제보입니다."
+            return instance.content[:20]
+        elif instance.type == "NEMO":
+            return instance.created_at.strftime("%Y-%m-%d %p %I시 %M분") + " 니모"
+
     class Meta:
         model = Post
-        fields = ["id", "title", "content", "type", "is_student", "created_at"]
+        fields = [
+            "id",
+            "title",
+            "content",
+            "type",
+            "is_student",
+            "created_at",
+            "is_deleted",
+        ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -62,6 +88,12 @@ class CommentSerializer(serializers.ModelSerializer):
         except Question.DoesNotExist:
             raise serializers.ValidationError("Question instance does not exist")
         data["is_student"] = question_instance.answer == answer
+
+        post_num_digit = "".join(filter(str.isdigit, data["post_num"]))
+        try:
+            data["post"] = Post.objects.get(id=post_num_digit)
+        except Post.DoesNotExist:
+            data["post"] = None
         return data
 
     def create(self, validated_data):

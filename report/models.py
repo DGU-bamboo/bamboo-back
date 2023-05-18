@@ -19,11 +19,18 @@ class Report(BaseModel):
 
     @property
     def postify(self):
-        content = (
-            self.created_at.strftime("%Y.%m.%d %p %I:%M:%S")
-            + (" 🐘" if self.is_student else "")
-            + f"\n{self.filtered_content}"
-        )
+        if not self.deleted_at:
+            content = (
+                self.created_at.strftime("%Y.%m.%d %p %I:%M:%S")
+                + (" 🐘" if self.is_student else "")
+                + f"\n{self.filtered_content}"
+            )
+        else:
+            content = (
+                self.created_at.strftime("%Y.%m.%d %p %I:%M:%S")
+                + (" 🐘" if self.is_student else "")
+                + f"\n< 작성자의 요청에 의해 삭제된 제보입니다. >"
+            )
         return content
 
 
