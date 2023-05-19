@@ -5,12 +5,24 @@ from django.http.request import HttpRequest
 from post.filters import PostTypeFilter, CommentApproveFilter
 from post.models import Post, Comment, MaintainerComment, MaintainerPost
 
-admin.site.register(Post)
-admin.site.register(Comment)
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_filter = [PostTypeFilter]
+    list_display = ["id", "type", "title"]
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_filter = [CommentApproveFilter]
+    list_display = ["id", "post_num", "short_content", "created_at", "is_approved"]
+
+    def short_content(self, instance):
+        return instance.content[:30]
 
 
 @admin.register(MaintainerPost)
-class PostAdmin(admin.ModelAdmin):
+class MaintainerPostAdmin(admin.ModelAdmin):
     readonly_fields = [
         "title",
         "type",
@@ -29,19 +41,23 @@ class PostAdmin(admin.ModelAdmin):
 
 
 @admin.register(MaintainerComment)
-class CommentAdmin(admin.ModelAdmin):
+class MaintainerCommentAdmin(admin.ModelAdmin):
     readonly_fields = [
         "post_num",
         "content",
         "password",
         "is_student",
         "approved_at",
+        "post",
     ]
     exclude = [
         "deleted_at",
     ]
     list_filter = [CommentApproveFilter]
-    list_display = ["id", "post_num", "created_at", "is_approved"]
+    list_display = ["id", "post_num", "short_content", "created_at", "is_approved"]
+
+    def short_content(self, instance):
+        return instance.content[:30]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         return super().get_queryset(request).filter(deleted_at__isnull=True)

@@ -10,8 +10,8 @@ class PostTypeFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ("NEMO", _("니모 제보 게시글")),
-            ("COMMON", _("일반 제보 게시글")),
+            ("NEMO", _(" 1. 니모 제보 게시글")),
+            ("COMMON", _(" 2. 일반 제보 게시글")),
         )
 
     def queryset(self, request: Any, queryset):
@@ -27,9 +27,9 @@ class CommentApproveFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ("UPLOADED", _("업로드된 댓글")),
-            ("NULL", _("승인 확인이 필요한 댓글")),
-            ("REJECTED", _("반려된 댓글")),
+            ("UPLOADED", _(" 1. 업로드된 댓글")),
+            ("NULL", _(" 2. 승인 확인이 필요한 댓글")),
+            ("REJECTED", _(" 3. 반려된 댓글")),
         )
 
     def queryset(self, request: Any, queryset):

@@ -2,7 +2,7 @@ from typing import Any
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
-from report.filters import NemoApproveFilter, CommonApproveFilter
+from report.filters import NemoApproveFilter, CommonApproveFilter, ReportFilter
 from report.models import (
     Question,
     Report,
@@ -11,12 +11,30 @@ from report.models import (
     MaintainerQuestion,
 )
 
-admin.site.register(Report)
-admin.site.register(Question)
+
+@admin.register(Report)
+class ReportAdmin(admin.ModelAdmin):
+    list_filter = [ReportFilter]
+    list_display = [
+        "id",
+        "type",
+        "short_content",
+        "created_at",
+        "is_student",
+        "is_approved",
+    ]
+
+    def short_content(self, instance):
+        return instance.content[:20]
+
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ["id", "content", "answer"]
 
 
 @admin.register(MaintainerNemoReport)
-class NemoReportAdmin(admin.ModelAdmin):
+class MaintainerNemoReportAdmin(admin.ModelAdmin):
     readonly_fields = [
         "content",
         "password",
@@ -28,7 +46,10 @@ class NemoReportAdmin(admin.ModelAdmin):
         "deleted_at",
     ]
     list_filter = [NemoApproveFilter]
-    list_display = ["id", "is_student", "created_at", "is_approved"]
+    list_display = ["id", "short_content", "created_at", "is_student", "is_approved"]
+
+    def short_content(self, instance):
+        return instance.content[:20]
 
     def get_queryset(self, request):
         return (
@@ -37,7 +58,7 @@ class NemoReportAdmin(admin.ModelAdmin):
 
 
 @admin.register(MaintainerCommonReport)
-class CommonReportAdmin(admin.ModelAdmin):
+class MaintainerCommonReportAdmin(admin.ModelAdmin):
     readonly_fields = [
         "content",
         "password",
@@ -58,8 +79,11 @@ class CommonReportAdmin(admin.ModelAdmin):
 
 
 @admin.register(MaintainerQuestion)
-class QuestionAdmin(admin.ModelAdmin):
+class MaintainerQuestionAdmin(admin.ModelAdmin):
     exclude = [
         "deleted_at",
     ]
     list_display = ["id", "content", "answer"]
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+        return super().get_queryset(request).filter(deleted_at__isnull=True)
