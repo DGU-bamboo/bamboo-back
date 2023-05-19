@@ -100,3 +100,19 @@ class CommentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data["filtered_content"] = validated_data["content"]
         return super().create(validated_data)
+
+
+class CommentListSerializer(serializers.ModelSerializer):
+    content = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Comment
+        fields = [
+            "id",
+            "content",
+        ]
+
+    def get_content(self, instance):
+        if instance.deleted_at:
+            return "< 작성자의 요청에 의해 삭제된 댓글입니다. >"
+        return instance.filtered_content
