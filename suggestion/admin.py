@@ -8,6 +8,7 @@ from suggestion.models import Suggestion, MaintainerSuggestion
 @admin.register(Suggestion)
 class SuggestionAdmin(admin.ModelAdmin):
     list_display = ["id", "short_content", "created_at", "contact"]
+    search_fields = ["content", "contact", "created_at"]
 
     def short_content(self, instance):
         return instance.content[:30]
@@ -19,6 +20,7 @@ class MaintainerSuggestionAdmin(admin.ModelAdmin):
         "content",
         "contact",
     ]
+    search_fields = ["content", "contact", "created_at"]
     exclude = [
         "deleted_at",
     ]
