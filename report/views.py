@@ -30,15 +30,16 @@ class ReportViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         queryset = Report.objects.filter(type="NEMO", is_approved=True, post=None)
         content = ""
         priority = 1
-        for q in queryset:
-            content += f"({priority})" + q.postify + "\n\n"
-            priority += 1
-        content += "#니모를찾아서 #동국대학교대나무숲 #동대나무숲"
-        title = timezone.now().strftime("%Y-%m-%d %p %I시 %M분") + " 니모"
-        post = Post.objects.create(
-            title=title, content=content, type="NEMO", is_student=False
-        )
-        queryset.update(post=post)
+        if queryset.exists():
+            for q in queryset:
+                content += f"({priority})" + q.postify + "\n\n"
+                priority += 1
+            content += "#니모를찾아서 #동국대학교대나무숲 #동대나무숲"
+            title = timezone.now().strftime("%Y-%m-%d %p %I시 %M분") + " 니모"
+            post = Post.objects.create(
+                title=title, content=content, type="NEMO", is_student=False
+            )
+            queryset.update(post=post)
         return Response()
 
 
