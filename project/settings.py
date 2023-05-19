@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "corsheaders",
+    "django_apscheduler",
     # created apps
     "core",
     "report",
@@ -158,3 +159,8 @@ DISCORD_WEBHOOK_URL_COMMENT = os.getenv("DISCORD_WEBHOOK_URL_COMMENT")
 DISCORD_WEBHOOK_URL_SUGGESTION = os.getenv("DISCORD_WEBHOOK_URL_SUGGESTION")
 DISCORD_WEBHOOK_URL_UPLOAD = os.getenv("DISCORD_WEBHOOK_URL_UPLOAD")
 DISCORD_WEBHOOK_URL_TEST = os.getenv("DISCORD_WEBHOOK_URL_TEST")
+
+
+# Apscheduler
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
