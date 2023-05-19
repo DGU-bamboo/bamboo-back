@@ -2,7 +2,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save
 from core.utils.discord import send_to_discord
 from django.conf import settings
-from post.models import Post, Comment
+from post.models import Post, Comment, MaintainerComment, MaintainerPost
 from django.utils import timezone
 from post.signals import send_discord_upload
 
@@ -23,6 +23,7 @@ def post_discord_sender(post, **kwargs):
 
 
 @receiver(post_save, sender=Post)
+@receiver(post_save, sender=MaintainerPost)
 def add_id_hashtag_in_post(sender, instance, created, **kwargs):
     if created:
         hashtag = " #" + str(instance.id) + "번째뿌우"
@@ -32,6 +33,7 @@ def add_id_hashtag_in_post(sender, instance, created, **kwargs):
 
 
 @receiver(pre_save, sender=Comment)
+@receiver(pre_save, sender=MaintainerComment)
 def comment_pre_save(sender, instance, **kwargs):
     try:
         old_instance = Comment.objects.get(pk=instance.pk)
@@ -42,6 +44,7 @@ def comment_pre_save(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Comment)
+@receiver(post_save, sender=MaintainerComment)
 def comment_post_save(sender, instance, created, **kwargs):
     if created:
         # todo: admin 추가하고 관리자용 어드민으로 변경

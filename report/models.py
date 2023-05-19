@@ -1,5 +1,5 @@
-from django.db import models
 from core.models import BaseModel
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from post.models import Post
 
@@ -34,14 +34,14 @@ class Report(BaseModel):
         return content
 
 
-class NemoReport(Report):
+class MaintainerNemoReport(Report):
     class Meta:
         proxy = True
         verbose_name = "니모 제보 (관리자용)"
         verbose_name_plural = "니모 제보들 (관리자용)"
 
 
-class CommonReport(Report):
+class MaintainerCommonReport(Report):
     class Meta:
         proxy = True
         verbose_name = "일반 제보 (관리자용)"
@@ -51,3 +51,10 @@ class CommonReport(Report):
 class Question(BaseModel):
     content = models.CharField(max_length=100)
     answer = models.CharField(max_length=20)
+
+
+class MaintainerQuestion(Question):
+    class Meta:
+        proxy = True
+        verbose_name = "재학생 인증 질문 (관리자용)"
+        verbose_name_plural = "재학생 인증 질문들 (관리자용)"

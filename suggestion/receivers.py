@@ -1,7 +1,7 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from core.utils.discord import send_to_discord
-from suggestion.models import Suggestion
+from suggestion.models import Suggestion, MaintainerSuggestion
 from django.conf import settings
 
 
