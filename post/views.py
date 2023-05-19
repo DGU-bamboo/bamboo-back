@@ -5,13 +5,14 @@ from django.db.models import Count
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 class PostViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["content"]
 
     def get_serializer_class(self):
         if self.action == "retrieve":
