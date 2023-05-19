@@ -5,11 +5,14 @@ from django.db.models import Count
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class PostViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
+    filter_backends = [DjangoFilterBackend]
+
     def get_serializer_class(self):
         if self.action == "retrieve":
             return PostDetailSerializer
@@ -20,7 +23,10 @@ class PostViewSet(
 
     @action(methods=["GET"], detail=True)
     def comments(self, request, *args, **kwargs):
-        queryset = Comment.objects.filter(is_approved=True).order_by("approved_at")
+        post = self.get_object()
+        queryset = Comment.objects.filter(post=post, is_approved=True).order_by(
+            "approved_at"
+        )
         serializers = CommentSerializer(queryset, many=True)
         return Response(serializers.data)
 
