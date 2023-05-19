@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from .models import *
 from .serializers import *
 from rest_framework.permissions import IsAdminUser
@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 
-class SuggestionViewSet(viewsets.ModelViewSet):
+class SuggestionViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Suggestion.objects.all()
 
     def get_serializer_class(self):
