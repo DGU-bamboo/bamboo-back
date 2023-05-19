@@ -34,6 +34,20 @@ class Report(BaseModel):
         return content
 
 
+class NemoReport(Report):
+    class Meta:
+        proxy = True
+        verbose_name = "니모 제보 (관리자용)"
+        verbose_name_plural = "니모 제보들 (관리자용)"
+
+
+class CommonReport(Report):
+    class Meta:
+        proxy = True
+        verbose_name = "일반 제보 (관리자용)"
+        verbose_name_plural = "일반 제보들 (관리자용)"
+
+
 class Question(BaseModel):
     content = models.CharField(max_length=100)
     answer = models.CharField(max_length=20)
