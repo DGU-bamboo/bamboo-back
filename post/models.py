@@ -25,3 +25,17 @@ class Comment(BaseModel):
     is_approved = models.BooleanField(null=True)
     post = models.ForeignKey(Post, null=True, blank=True, on_delete=models.CASCADE)
     filtered_content = models.TextField(default="")
+
+
+class MaintainerPost(Post):
+    class Meta:
+        proxy = True
+        verbose_name = "게시글 (관리자용)"
+        verbose_name_plural = "게시글들 (관리자용)"
+
+
+class MaintainerComment(Comment):
+    class Meta:
+        proxy = True
+        verbose_name = "댓글 (관리자용)"
+        verbose_name_plural = "댓글들 (관리자용)"
