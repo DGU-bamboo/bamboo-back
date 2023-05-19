@@ -1,4 +1,5 @@
 from rest_framework import viewsets, mixins
+
 from .models import *
 from .serializers import *
 from django.db.models import Count
@@ -28,7 +29,7 @@ class PostViewSet(
         queryset = Comment.objects.filter(post=post, is_approved=True).order_by(
             "approved_at"
         )
-        serializers = CommentSerializer(queryset, many=True)
+        serializers = CommentListSerializer(queryset, many=True)
         return Response(serializers.data)
 
 
