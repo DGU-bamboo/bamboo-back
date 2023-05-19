@@ -23,6 +23,7 @@ class ReportAdmin(admin.ModelAdmin):
         "is_student",
         "is_approved",
     ]
+    search_fields = ["filtered_content", "created_at"]
 
     def short_content(self, instance):
         return instance.content[:20]
@@ -31,6 +32,7 @@ class ReportAdmin(admin.ModelAdmin):
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ["id", "content", "answer"]
+    search_fields = ["content", "answer"]
 
 
 @admin.register(MaintainerNemoReport)
@@ -42,6 +44,7 @@ class MaintainerNemoReportAdmin(admin.ModelAdmin):
         "is_student",
         "post",
     ]
+    search_fields = ["filtered_content", "created_at"]
     exclude = [
         "deleted_at",
     ]
@@ -66,6 +69,7 @@ class MaintainerCommonReportAdmin(admin.ModelAdmin):
         "is_student",
         "post",
     ]
+    search_fields = ["filtered_content", "created_at"]
     exclude = [
         "deleted_at",
     ]
@@ -84,6 +88,7 @@ class MaintainerQuestionAdmin(admin.ModelAdmin):
         "deleted_at",
     ]
     list_display = ["id", "content", "answer"]
+    search_fields = ["content", "answer"]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         return super().get_queryset(request).filter(deleted_at__isnull=True)
