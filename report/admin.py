@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
 from report.filters import NemoApproveFilter, CommonApproveFilter
-
 from report.models import Question, Report, NemoReport, CommonReport
 
 admin.site.register(Report)
