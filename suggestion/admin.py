@@ -12,9 +12,6 @@ class SuggestionAdmin(admin.ModelAdmin):
     def short_content(self, instance):
         return instance.content[:30]
 
-    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-        return super().get_queryset(request).filter(deleted_at__isnull=True)
-
 
 @admin.register(MaintainerSuggestion)
 class MaintainerSuggestionAdmin(admin.ModelAdmin):
