@@ -4,6 +4,7 @@ from core.utils.discord import send_to_discord
 from report.models import Report
 from django.conf import settings
 from post.models import Post
+from django.utils import timezone
 
 
 @receiver(post_save, sender=Report)
@@ -38,6 +39,7 @@ def common_approve_to_post(sender, instance, **kwargs):
             return
         if old_instance.is_approved != True and instance.is_approved == True:
             post = Post.objects.create(
+                title=instance.filtered_content[:30],
                 content=instance.postify + "\n\n#동국대학교대나무숲 #동대나무숲",
                 is_student=instance.is_student,
                 type="COMMON",
@@ -56,4 +58,6 @@ def edit_post_after_report_deleted(sender, instance, **kwargs):
         instance.post.content = instance.post.content.replace(
             find_content, instance.postify
         )
-        instance.post.save(update_fields=["content"])
+        if instance.type == "COMMON":
+            instance.post.deleted_at = timezone.now()
+        instance.post.save(update_fields=["content", "deleted_at"])

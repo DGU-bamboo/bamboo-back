@@ -11,6 +11,7 @@ class Post(BaseModel):
         ADMIN = "ADMIN", _("ADMIN")
 
     type = models.CharField(choices=PostType.choices, max_length=15)
+    title = models.CharField(max_length=30, null=True, blank=True)
     content = models.TextField(default="")
     is_student = models.BooleanField(default=False)
 

@@ -14,12 +14,9 @@ class PostSerializer(serializers.ModelSerializer):
         return False
 
     def get_title(self, instance):
-        if instance.type == "COMMON":
-            if instance.deleted_at:
-                return "삭제된/n제보입니다."
-            return instance.content[:20]
-        elif instance.type == "NEMO":
-            return instance.created_at.strftime("%Y-%m-%d %p %I시 %M분") + " 니모"
+        if instance.deleted_at:
+            return "삭제된/n제보입니다."
+        return instance.title
 
     class Meta:
         model = Post
@@ -45,12 +42,9 @@ class PostDetailSerializer(serializers.ModelSerializer):
         return False
 
     def get_title(self, instance):
-        if instance.type == "COMMON":
-            if instance.deleted_at:
-                return "삭제된/n제보입니다."
-            return instance.content[:20]
-        elif instance.type == "NEMO":
-            return instance.created_at.strftime("%Y-%m-%d %p %I시 %M분") + " 니모"
+        if instance.deleted_at:
+            return "삭제된/n제보입니다."
+        return instance.title
 
     class Meta:
         model = Post

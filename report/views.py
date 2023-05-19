@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from post.models import Post
 from rest_framework import views
+from django.utils import timezone
 
 
 class ReportViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -33,7 +34,10 @@ class ReportViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             content += f"({priority})" + q.postify + "\n\n"
             priority += 1
         content += "#니모를찾아서 #동국대학교대나무숲 #동대나무숲"
-        post = Post.objects.create(content=content, type="NEMO", is_student=False)
+        title = timezone.now().strftime("%Y-%m-%d %p %I시 %M분") + " 니모"
+        post = Post.objects.create(
+            title=title, content=content, type="NEMO", is_student=False
+        )
         queryset.update(post=post)
         return Response()
 
