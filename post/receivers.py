@@ -13,16 +13,20 @@ def post_discord_sender(post, **kwargs):
     if post.type == "NEMO":
         admin_link = f"{settings.WEB_URL}/admin/post/maintainerpost/{post.id}/change/"
         web_link = f"{settings.FE_WEB_URL}/detail/{post.id}"
-        message = f"""🐠니모 제보가 모여 [게시글]({web_link}) 업로드 완료!📋
+        message = f"""
+                    > 🐠 **니모 제보**가 모여 [게시글]({web_link}) 업로드 완료!📋
                     > 인스타에 업로드 잊지 말아주세요!
-                    > 관리자 페이지🧑🏼‍💻 [바로가기]({admin_link})"""
+                    > 관리자 페이지🧑🏼‍💻 [바로가기]({admin_link})
+                    """
         send_to_discord(url, message)
     elif post.type == "COMMON":
         admin_link = f"{settings.WEB_URL}/admin/post/maintainerpost/{post.id}/change/"
         web_link = f"{settings.FE_WEB_URL}/detail/{post.id}"
-        message = f"""💌일반 제보로 [게시글]({web_link}) 업로드 완료!📋
+        message = f"""
+                    > 💌 **일반 제보**로 [게시글]({web_link}) 업로드 완료!📋
                     > 인스타에 업로드 잊지 말아주세요!
-                    > 관리자 페이지🧑🏼‍💻 [바로가기]({admin_link})"""
+                    > 관리자 페이지🧑🏼‍💻 [바로가기]({admin_link})
+                    """
         send_to_discord(url, message)
 
 
@@ -59,9 +63,11 @@ def comment_post_save(sender, instance, created, **kwargs):
             f"{settings.WEB_URL}/admin/post/maintainerpost/{instance.post.id}/change/"
         )
         url = settings.DISCORD_WEBHOOK_URL_NEMO
-        message = f"""[내 목소리가 들리나요? 댓글 달아주세요!]({comment_admin_link})
-                        > 댓글 내용 : {instance.content}
-                        > 재학생 여부 : {instance.is_student}
-                        > [글 링크]({post_admin_link})
-                        > [거절하기]({reject_url})"""
+        message = f"""
+                    > 💭내 목소리가 들리나요? **[댓글]{comment_admin_link})** 달아주세요!(
+                    > 댓글 내용 : {instance.content}
+                    > 재학생 여부 : {instance.is_student}
+                    > [글 링크]({post_admin_link})
+                    > [거절하기]({reject_url})
+                    """
         send_to_discord(url, message)
