@@ -62,9 +62,9 @@ def comment_post_save(sender, instance, created, **kwargs):
         post_admin_link = (
             f"{settings.WEB_URL}/admin/post/maintainerpost/{instance.post.id}/change/"
         )
-        url = settings.DISCORD_WEBHOOK_URL_NEMO
+        url = settings.DISCORD_WEBHOOK_URL_COMMENT
         message = f"""
-                    > 💭내 목소리가 들리나요? **[댓글]{comment_admin_link})** 달아주세요!(
+                    > 💭내 목소리가 들리나요? **[댓글]({comment_admin_link})** 달아주세요!
                     > 댓글 내용 : {instance.content}
                     > 재학생 여부 : {instance.is_student}
                     > [글 링크]({post_admin_link})
